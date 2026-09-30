@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Development tool caches
+.pytest_cache/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Large connectome data
+# flywire_female_brain.npz
+# data/flywire_female_brain.npz
+
+# Model checkpoints / weights
+# Uncomment these lines if you do not want to version trained weights
+# *.pth
+# *.pt
+
+# Simulation outputs, logs and temporary Doom files
+*.log
+*.wad
+*.dmp
+
+# OS-generated files
+.DS_Store
+Thumbs.db

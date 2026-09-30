@@ -47,8 +47,8 @@ The following diagram summarizes the closed-loop architecture of the FlyWire spi
 * **Synaptic Plasticity:** Online Reward-modulated Spike-Timing-Dependent Plasticity (R-STDP) combining eligibility traces with environmental reward signals (enemy eliminations, damage avoidance, and ammo efficiency).
 
 ### 2. Heuristic Baseline (`src/heuristic_baseline.py`)
-* **Control Ablation:** Evaluates the exact same retinotopic sector analysis and combat rules entirely detached from the biological spiking graph.
-* **Mechanism:** Direct reactive heuristics triggered by spatial contrast salience, foveal target concentration, and damage reflexes.
+* **Control Ablation:** Uses similar retinotopic visual preprocessing while completely bypassing the biological connectome and spiking dynamics.
+* **Mechanism:** Reactive rules based on visual salience, eight horizontal sectors, damage response, target position, and direct ViZDoom actions.
 
 ### 3. Deep Q-Network (`src/dqn_*.py`)
 * **Architecture:** 2D Convolutional Neural Network (Conv2d 1→16→32) followed by a 128-unit dense linear layer and a discrete action head.
@@ -71,7 +71,12 @@ The following diagram summarizes the closed-loop architecture of the FlyWire spi
 
 ```text
 ├── assets/
-│   └── demo_screenshot.png           # Visualization of the ViZDoom environment
+│   ├── architecture_diagram.png      # Closed-loop FlyWire connectome architecture
+│   └── demo/
+│       ├── connectome_eval_1.png     # Connectome evaluation example
+│       ├── connectome_eval_2.png     # Connectome evaluation example
+│       ├── heuristic_baseline.png    # Heuristic baseline example (no connectome)
+│       └── dqn_baseline.png          # DQN baseline example
 ├── data/
 │   ├── flywire_female_brain.npz      # Full brain sparse adjacency matrix (CSR)
 │   ├── indices_visuales.npy          # Retinotopic sensory neuron indices
@@ -124,7 +129,7 @@ pip install -r requirements.txt
 
 ### 3. Data Requirements
 
-Make sure the following files are available under the `data/` directory:
+Make sure the following files are available under the `data/` directory, since the current scripts load them from these relative paths:
 
 ```text
 data/
@@ -141,6 +146,8 @@ If large model or connectome files are not stored directly in Git, provide them 
 
 ## Usage
 
+> **Run all commands from the repository root directory.** The scripts load connectome data, neuron indices, and trained weights using relative paths under `data/`.
+
 ### Connectome Training (R-STDP)
 
 Executes batches of episodes, adapting the plastic projection matrix through synaptic eligibility traces and saving progress automatically:
@@ -148,6 +155,26 @@ Executes batches of episodes, adapting the plastic projection matrix through syn
 ```bash
 python src/connectome_train.py
 ```
+#### Headless / Hidden Window Mode
+
+Both training scripts can be configured to run with the ViZDoom window hidden:
+
+- `src/connectome_train.py`
+- `src/dqn_train.py`
+
+To disable the ViZDoom window during training:
+
+```python
+game.set_window_visible(False)
+```
+
+Set it to `True` if you want to observe the environment while the agent is training:
+
+```python
+game.set_window_visible(True)
+```
+
+In the current code, `connectome_train.py` uses the hidden window mode by default, while `dqn_train.py` uses a visible window by default. For long training runs, `False` is recommended because rendering the game window is usually unnecessary.
 
 ### Connectome Evaluation
 

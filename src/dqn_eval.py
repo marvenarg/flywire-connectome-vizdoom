@@ -9,8 +9,14 @@ import vizdoom as vzd
 # ==========================================
 # 1. DISPOSITIVO Y GPU
 # ==========================================
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"--> Dispositivo activo (Modo Evaluación DQN): {device} ({torch.cuda.get_device_name(0)})")
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    dev_name = torch.cuda.get_device_name(0)
+else:
+    device = torch.device("cpu")
+    dev_name = "CPU"
+print(f"--> Dispositivo activo (Modo Evaluación DQN): {device} ({dev_name})")
 
 # ==========================================
 # 2. RED NEURONAL CONVOLUCIONAL (CNN DQN)
@@ -20,7 +26,7 @@ class DoomDQN(nn.Module):
         super(DoomDQN, self).__init__()
         self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
-
+        
         self.fc1 = nn.Linear(32 * 16 * 32, 128)
         self.fc2 = nn.Linear(128, n_actions)
         self.relu = nn.ReLU()
@@ -46,7 +52,7 @@ n_actions = len(ACTIONS)
 policy_net = DoomDQN(n_actions).to(device)
 
 # CARGA DE PESOS ENTRENADOS (CONGELADOS)
-WEIGHTS_SAVE_FILE = "dqn_pesos.pth"
+WEIGHTS_SAVE_FILE = "data/dqn_pesos.pth"
 if os.path.exists(WEIGHTS_SAVE_FILE):
     policy_net.load_state_dict(torch.load(WEIGHTS_SAVE_FILE, map_location=device))
     policy_net.eval()  # Modo evaluación (congela capas si tuviera Dropout/Batchnorm)

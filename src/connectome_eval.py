@@ -9,13 +9,19 @@ import vizdoom as vzd
 # ==========================================
 # 1. DISPOSITIVO Y GPU
 # ==========================================
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"--> Dispositivo activo (Modo Evaluación): {device} ({torch.cuda.get_device_name(0)})")
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    dev_name = torch.cuda.get_device_name(0)
+else:
+    device = torch.device("cpu")
+    dev_name = "CPU"
+print(f"--> Dispositivo activo (Modo Evaluación): {device} ({dev_name})")
 
 # ==========================================
 # 2. CARGA DEL CONECTOMA BIOLÓGICO (CSR)
 # ==========================================
-npz_file = "flywire_female_brain.npz"
+npz_file = "data/flywire_female_brain.npz"
 adj_scipy = sp.load_npz(npz_file).tocsr()
 n_neurons = adj_scipy.shape[0]
 
@@ -30,8 +36,8 @@ del adj_scipy, raw_weights
 # ==========================================
 # 3. PUERTOS ANATÓMICOS RETINOTÓPICOS (8 SECTORES)
 # ==========================================
-vis_idx_np = np.load("indices_visuales.npy")
-mot_idx_np = np.load("indices_motores.npy")
+vis_idx_np = np.load("data/indices_visuales.npy")
+mot_idx_np = np.load("data/indices_motores.npy")
 
 N_IN = len(vis_idx_np)
 print(f"--> Neuronas sensoriales visuales activas: {N_IN}")
@@ -56,7 +62,7 @@ mot_forward  = torch.tensor(mot_idx_np[6*split_m:], device=device, dtype=torch.l
 
 # CARGA DE PESOS ENTRENADOS (CONGELADOS)
 ##WEIGHTS_SAVE_FILE = "pesos_plasticos_v22.pt"
-WEIGHTS_SAVE_FILE = "pesos_plasticos_v23.pt"
+WEIGHTS_SAVE_FILE = "data/pesos_plasticos_v23.pt"
 if os.path.exists(WEIGHTS_SAVE_FILE):
     w_plastic = torch.load(WEIGHTS_SAVE_FILE, map_location=device, weights_only=True)
     print(f"--> Pesos entrenados cargados correctamente desde: {WEIGHTS_SAVE_FILE}")

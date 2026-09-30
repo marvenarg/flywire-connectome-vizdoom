@@ -8,8 +8,14 @@ import vizdoom as vzd
 # ==========================================
 # 1. DISPOSITIVO Y GPU
 # ==========================================
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"--> Dispositivo activo (Modo Demo PURAMENTE LÓGICO / SIN CONECTOME): {device} ({torch.cuda.get_device_name(0)})")
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    dev_name = torch.cuda.get_device_name(0)
+else:
+    device = torch.device("cpu")
+    dev_name = "CPU"
+print(f"--> Dispositivo activo (Modo Demo PURAMENTE LÓGICO / SIN CONECTOME): {device} ({dev_name})")
 
 # ==========================================
 # 2. CONFIGURACIÓN VIZDOOM (MODO VISIBLE)

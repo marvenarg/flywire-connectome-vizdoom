@@ -12,8 +12,14 @@ import vizdoom as vzd
 # ==========================================
 # 1. DISPOSITIVO Y GPU
 # ==========================================
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"--> Dispositivo activo (Baseline DQN): {device} ({torch.cuda.get_device_name(0)})")
+
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    dev_name = torch.cuda.get_device_name(0)
+else:
+    device = torch.device("cpu")
+    dev_name = "CPU"
+print(f"--> Dispositivo activo (Baseline DQN): {device} ({dev_name})")
 
 # ==========================================
 # 2. RED NEURONAL CONVOLUCIONAL (CNN DQN)
@@ -24,7 +30,7 @@ class DoomDQN(nn.Module):
         # Entrada: [Batch, 1, 16, 32]
         self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)
         self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
-
+        
         self.fc1 = nn.Linear(32 * 16 * 32, 128)
         self.fc2 = nn.Linear(128, n_actions)
         self.relu = nn.ReLU()
@@ -55,7 +61,7 @@ optimizer = optim.Adam(policy_net.parameters(), lr=0.001)
 memory = deque(maxlen=10000)
 
 # CARGA DE PESOS PERSISTENTES (SI EXISTEN)
-WEIGHTS_SAVE_FILE = "dqn_pesos.pth"
+WEIGHTS_SAVE_FILE = "data/dqn_pesos.pth"
 if os.path.exists(WEIGHTS_SAVE_FILE):
     policy_net.load_state_dict(torch.load(WEIGHTS_SAVE_FILE, map_location=device, weights_only=True))
     target_net.load_state_dict(policy_net.state_dict())
@@ -104,12 +110,12 @@ ep = 0
 try:
     while True:
         print(f"\n--- INICIANDO LOTE DQN: Episodios {ep+1} al {ep+LOTE_EPISODIOS} ---")
-
+        
         for _ in range(LOTE_EPISODIOS):
             ep += 1
             game.new_episode()
             step = 0
-
+            
             init_state = game.get_state()
             last_health = init_state.game_variables[0] if (init_state and len(init_state.game_variables) > 0) else 100.0
             last_kills  = init_state.game_variables[2] if (init_state and len(init_state.game_variables) > 2) else 0.0
@@ -140,13 +146,13 @@ try:
                 # Recompensa compuesta con castigo por inactividad
                 health_delta = current_health - last_health
                 kill_confirmed = (current_kills - last_kills) > 0
-
+                
                 custom_reward = reward_env
                 if kill_confirmed:
                     custom_reward += 5.0
                 if health_delta < 0:
                     custom_reward += health_delta * 0.2
-
+                
                 # Castigo leve si elige la acción 0 (espera/no hacer nada) para romper bloqueos
                 if action_idx == 0:
                     custom_reward -= 0.05
@@ -178,7 +184,7 @@ try:
                     expected_state_action_values = reward_batch + (GAMMA * next_state_values * (1 - done_batch))
 
                     loss = nn.MSELoss()(state_action_values, expected_state_action_values.unsqueeze(1))
-
+                    
                     optimizer.zero_grad()
                     loss.backward()
                     optimizer.step()

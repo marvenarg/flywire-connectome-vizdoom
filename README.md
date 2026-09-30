@@ -4,7 +4,21 @@ A comparative benchmark evaluating sensory-motor control, computational efficien
 
 This project contrasts three distinct computational paradigms: a **biophysically inspired spiking neural network derived from the full adult fruit fly (*Drosophila melanogaster*) connectome (FlyWire)**, a **purely reactive heuristic baseline without a biological network**, and a **standard Deep Q-Network (DQN) baseline**.
 
-![ViZDoom Screenshot](assets/demo_screenshot.png)
+## Evaluation Examples
+
+### FlyWire Connectome Agent
+
+![Connectome Evaluation 1](assets/demo/connectome_eval_1.png)
+
+![Connectome Evaluation 2](assets/demo/connectome_eval_2.png)
+
+### Heuristic Baseline — No Connectome
+
+![Heuristic Baseline](assets/demo/heuristic_baseline.png)
+
+### Deep Q-Network Baseline
+
+![DQN Baseline](assets/demo/dqn_baseline.png)
 
 ---
 
@@ -19,6 +33,13 @@ This repository implements the whole-brain connectome matrix of *Drosophila mela
 ## Architectural Paradigms
 
 ### 1. Spiking Connectome Agent (`src/connectome_*.py`)
+
+The following diagram summarizes the closed-loop architecture of the FlyWire spiking connectome agent:
+
+<p align="center">
+  <img src="assets/architecture_diagram.png" alt="FlyWire Spiking Connectome Architecture" width="95%">
+</p>
+
 * **Biological Substrate:** Real connectome adjacency graph loaded from `flywire_female_brain.npz` (~140,000 neurons, sparse tensor execution via PyTorch).
 * **Membrane Dynamics:** Simplified Leaky Integrate-and-Fire (LIF) model defined by membrane time constant $\tau_m = 0.82$, dynamic resting/reset thresholds, and global network inhibition ($I_{\text{inhib}}$) to prevent runaway synchronization.
 * **Retinotopic Input Layer:** Coarse visual mapping (16×32 resolution) partitioned into 8 horizontal sectors. Luminance and temporal motion contrast are projected directly into visual sensory indices (`indices_visuales.npy`).

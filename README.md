@@ -8,22 +8,17 @@ This project contrasts three distinct computational paradigms: a **biophysically
 
 ### FlyWire Connectome Agent
 
-<p align="center">
-  <img src="assets/demo/connectome_eval_1.png" width="48%">
-  <img src="assets/demo/connectome_eval_2.png" width="48%">
-</p>
+![Connectome Evaluation 1](assets/demo/connectome_eval_1.png)
+
+![Connectome Evaluation 2](assets/demo/connectome_eval_2.png)
 
 ### Heuristic Baseline — No Connectome
 
-<p align="center">
-  <img src="assets/demo/heuristic_baseline.png" width="48%">
-</p>
+![Heuristic Baseline](assets/demo/heuristic_baseline.png)
 
 ### Deep Q-Network Baseline
 
-<p align="center">  
-  <img src="assets/demo/dqn_baseline.png" width="48%">
-</p>
+![DQN Baseline](assets/demo/dqn_baseline.png)
 
 ---
 
@@ -188,10 +183,17 @@ python src/dqn_eval.py
 
 ## References
 
-- FlyWire Consortium. *Neuronal wiring diagram of an adult brain*. Nature (2024).  
-  https://www.nature.com/articles/s41586-024-07558-y
+- Dorkenwald, S., et al. (2024). *Neuronal wiring diagram of an adult brain*. Nature.  
+  https://doi.org/10.1038/s41586-024-07558-y
 
-- Kempka, M., Wydmuch, M., Runc, G., Toczek, J., & Jaśkiewicz, W. (2016). *ViZDoom: A Doom-based AI Research Platform for Visual Reinforcement Learning*. IEEE Conference on Computational Intelligence and Games.  
+- FlyWire Consortium. *FlyWire Whole-brain Connectome Connectivity Data*, release 783.0. Zenodo.  
+  https://zenodo.org/records/10676866
+
+- FlyConnectome. *FlyWire neuron annotations*. GitHub repository.  
+  https://github.com/flyconnectome/flywire_annotations
+
+- Kempka, M., Wydmuch, M., Runc, G., Toczek, J., & Jaśkiewicz, W. (2016).  
+  *ViZDoom: A Doom-based AI Research Platform for Visual Reinforcement Learning*.  
   https://arxiv.org/abs/1605.02097
 
 - Mnih, V., et al. (2015). *Human-level control through deep reinforcement learning*. Nature, 518, 529–533.  

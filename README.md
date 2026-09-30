@@ -8,17 +8,22 @@ This project contrasts three distinct computational paradigms: a **biophysically
 
 ### FlyWire Connectome Agent
 
-![Connectome Evaluation 1](assets/demo/connectome_eval_1.png)
-
-![Connectome Evaluation 2](assets/demo/connectome_eval_2.png)
+<p align="center">
+  <img src="assets/demo/connectome_eval_1.png" width="48%">
+  <img src="assets/demo/connectome_eval_2.png" width="48%">
+</p>
 
 ### Heuristic Baseline — No Connectome
 
-![Heuristic Baseline](assets/demo/heuristic_baseline.png)
+<p align="center">
+  <img src="assets/demo/heuristic_baseline.png" width="48%">
+</p>
 
 ### Deep Q-Network Baseline
 
-![DQN Baseline](assets/demo/dqn_baseline.png)
+<p align="center">  
+  <img src="assets/demo/dqn_baseline.png" width="48%">
+</p>
 
 ---
 

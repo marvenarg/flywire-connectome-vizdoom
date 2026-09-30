@@ -127,6 +127,24 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+#### Optional: NVIDIA GPU / CUDA 12.4 (Debian 13)
+
+If you are using Debian 13 with a compatible NVIDIA driver and want GPU acceleration, you can reinstall PyTorch using the CUDA 12.4 wheel:
+
+```bash
+pip install --upgrade --force-reinstall torch --index-url https://download.pytorch.org/whl/cu124
+```
+
+Verify that PyTorch can access CUDA:
+
+```bash
+python -c "import torch; print(torch.cuda.is_available()); print(torch.version.cuda)"
+```
+
+If CUDA is not available, the project automatically falls back to CPU execution.
+
+> `torchvision` is not required by the current project scripts.
+
 ### 3. Data Requirements
 
 Make sure the following files are available under the `data/` directory, since the current scripts load them from these relative paths:

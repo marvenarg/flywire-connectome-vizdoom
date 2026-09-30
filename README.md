@@ -92,7 +92,7 @@ sudo pacman -S --needed base-devel zlib sdl2 openal boost cmake
 Set up a clean virtual environment and install the project dependencies:
 
 ```bash
-git clone https://github.com/<your-username>/flywire-connectome-vizdoom.git
+git clone https://github.com/marvenarg/flywire-connectome-vizdoom.git
 cd flywire-connectome-vizdoom
 
 python3 -m venv .venv

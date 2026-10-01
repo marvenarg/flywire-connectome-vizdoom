@@ -94,6 +94,8 @@ The following diagram summarizes the closed-loop architecture of the FlyWire spi
 ├── requirements.txt
 └── README.md
 
+```
+
 
 ## Installation & Setup
 
